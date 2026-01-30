@@ -66,16 +66,16 @@ export class MainScreen extends Container {
     this.playButton.onPress.connect(() => this.bouncer.play());
     this.addChild(this.playButton);
 
-    this.balanceBox = new RoundedBox({width: 170, height: 70});
+    this.balanceBox = new RoundedBox({ width: 250, height: 70 });
     this.addChild(this.balanceBox);
 
-    this.winBox = new RoundedBox({width: 170, height: 70});
+    this.winBox = new RoundedBox({ width: 250, height: 70 });
     this.addChild(this.winBox);
 
-    this.balance = new Label({text: `BALANCE: \n 1000`, style: {fill: "black"}});
+    this.balance = new Label({ text: `BALANCE: 1000`, style: { fill: "black" } });
     this.addChild(this.balance);
 
-    this.win = new Label({text: `WIN: \n 0`, style: {fill: "black"}});
+    this.win = new Label({ text: `WIN: 0`, style: { fill: "black" } });
     this.addChild(this.win);
   }
 
@@ -116,14 +116,14 @@ export class MainScreen extends Container {
     this.playButton.x = width / 2;
     this.playButton.y = height - 75;
 
-    this.balance.x = width / 2 + 200;
+    this.balance.x = width / 2 + 250;
     this.balance.y = height - 85;
-    this.balanceBox.x = width / 2 + 200;
+    this.balanceBox.x = width / 2 + 250;
     this.balanceBox.y = height - 85;
 
-    this.winBox.x = width / 2 - 200;
+    this.winBox.x = width / 2 - 250;
     this.winBox.y = height - 85;
-    this.win.x = width / 2 - 200;
+    this.win.x = width / 2 - 250;
     this.win.y = height - 85;
 
     this.bouncer.resize(width, height);
