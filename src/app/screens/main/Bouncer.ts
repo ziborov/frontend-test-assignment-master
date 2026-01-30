@@ -7,7 +7,7 @@ import { DIRECTION, Logo } from "./Logo";
 import type { MainScreen } from "./MainScreen";
 
 export class Bouncer {
-  private static readonly LOGO_COUNT = 3;
+  private static readonly LOGO_COUNT = 8;
   private static readonly ANIMATION_DURATION = 1;
   private static readonly WAIT_DURATION = 0.5;
 
@@ -19,6 +19,7 @@ export class Bouncer {
   private yMax = 400;
   private xMin = -400;
   private xMax = 400;
+  private moveLogos = false;
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -57,6 +58,7 @@ export class Bouncer {
   }
 
   public play(): void {
+    this.moveLogos = !this.moveLogos;
   }
 
   public update(): void {
@@ -67,8 +69,9 @@ export class Bouncer {
   }
 
   private setDirection(logo: Logo): void {
-    switch (logo.direction) {
-      case DIRECTION.NE:
+    if (this.moveLogos) {
+      switch (logo.direction) {
+        case DIRECTION.NE:
         logo.x += logo.speed;
         logo.y -= logo.speed;
         break;
@@ -85,6 +88,7 @@ export class Bouncer {
         logo.y += logo.speed;
         break;
     }
+  }
   }
 
   private setLimits(logo: Logo): void {
