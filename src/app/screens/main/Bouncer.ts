@@ -72,23 +72,23 @@ export class Bouncer {
     if (this.moveLogos) {
       switch (logo.direction) {
         case DIRECTION.NE:
-        logo.x += logo.speed;
-        logo.y -= logo.speed;
-        break;
-      case DIRECTION.NW:
-        logo.x -= logo.speed;
-        logo.y -= logo.speed;
-        break;
-      case DIRECTION.SE:
-        logo.x += logo.speed;
-        logo.y += logo.speed;
-        break;
-      case DIRECTION.SW:
-        logo.x -= logo.speed;
-        logo.y += logo.speed;
-        break;
+          logo.x += logo.speed;
+          logo.y -= logo.speed;
+          break;
+        case DIRECTION.NW:
+          logo.x -= logo.speed;
+          logo.y -= logo.speed;
+          break;
+        case DIRECTION.SE:
+          logo.x += logo.speed;
+          logo.y += logo.speed;
+          break;
+        case DIRECTION.SW:
+          logo.x -= logo.speed;
+          logo.y += logo.speed;
+          break;
+      }
     }
-  }
   }
 
   private setLimits(logo: Logo): void {
