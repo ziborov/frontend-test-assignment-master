@@ -2,3 +2,5 @@ https://wordwall.net/en-us/community/simple-wheel
 https://github.com/topics/spin-wheel
 
 https://github.com/CyberDex/fire-wheel
+
+https://www.google.com/search?q=simple+pixijs+typescript+wheel+for+spinning&oq=simple+pixijs+typescript+wheel+for+spinning&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigAdIBCTIzNzYwajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#fpstate=ive&vld=cid:24e2bf03,vid:CkSOKSR4UD4,st:56.559
