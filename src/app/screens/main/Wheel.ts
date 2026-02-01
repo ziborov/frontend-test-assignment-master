@@ -1,4 +1,4 @@
-import { Graphics } from "pixi.js";
+import { Graphics, Text, TextStyle } from "pixi.js";
 
 export interface IWheelOptions {
   center: { x: number; y: number };
@@ -49,20 +49,36 @@ export class Wheel extends Graphics {
       this.closePath();
       this.fill();
 
-      this.moveTo(this.center.x, this.center.y);
-      this.lineTo(
-        this.center.x + this.radius * Math.cos(this.wheelAngle + startAngle),
-        this.center.y + this.radius * Math.sin(this.wheelAngle + startAngle),
-      );
-      this.lineTo(
-        this.center.x + this.radius * Math.cos(this.wheelAngle + endAngle),
-        this.center.y + this.radius * Math.sin(this.wheelAngle + endAngle),
-      );
-      this.lineTo(this.center.x, this.center.y);
-      this.closePath();
-      this.stroke();
+      const textAngle = startAngle + segmentAngle / 2;
 
-      //ctx.stroke();
+      console.log("textAngle", textAngle);
+
+      const style = new TextStyle({
+        fontSize: 40,
+        fill: "#000000",
+        align: "center",
+        fontFamily: "Arial",
+        fontWeight: "bold",
+      });
+      const text = new Text(this.segments[i], style);
+      text.anchor.set(0.5);
+      text.position.set(
+        this.center.x + this.radius * 0.6 * Math.cos(textAngle),
+        this.center.y + this.radius * 0.6 * Math.sin(textAngle),
+      );
+      this.addChild(text); // Text inherits Graphics positioning
+      //this.moveTo(this.center.x, this.center.y);
+      // this.lineTo(
+      //   this.center.x + this.radius * Math.cos(this.wheelAngle + startAngle),
+      //   this.center.y + this.radius * Math.sin(this.wheelAngle + startAngle),
+      // );
+      // this.lineTo(
+      //   this.center.x + this.radius * Math.cos(this.wheelAngle + endAngle),
+      //   this.center.y + this.radius * Math.sin(this.wheelAngle + endAngle),
+      // );
+      // this.lineTo(this.center.x, this.center.y);
+      // this.closePath();
+      // this.stroke();
 
       // this.save();
       // this.translate(this.center.x, this.center.y);
@@ -72,6 +88,10 @@ export class Wheel extends Graphics {
       // this.font = "45px Arial";
       // this.fillText(this.segments[i], this.radius - 30, 5);
       // this.restore();
+
+      //this.textAlign = "right";
+      // this.fillStyle = "#000";
+      // this.font = "45px Arial";
     }
 
     // Draw center circle
@@ -80,10 +100,4 @@ export class Wheel extends Graphics {
     this.arc(this.center.x, this.center.y, this.radius * 0.1, 0, 2 * Math.PI);
     this.fill();
   }
-
-  // publicdraw(): void {
-  //   //this.fillStyle(this.colors[0]);
-  //   this.drawCircle(this.center.x, this.center.y, this.radius);
-  //   this.endFill();
-  // }
 }

@@ -4,3 +4,30 @@ https://github.com/topics/spin-wheel
 https://github.com/CyberDex/fire-wheel
 
 https://www.youtube.com/watch?v=CkSOKSR4UD4&list=PLT57Au7oHwXDM9kwwbTzYouDiUm8GOwj7&index=3
+
+import { Graphics, Text, TextStyle } from 'pixi.js';
+
+class LabeledShape extends Graphics {
+    constructor(textString, color) {
+        super();
+        this.color = color;
+        this.textString = textString;
+        this.drawShape();
+        this.addText();
+    }
+
+    drawShape() {
+        this.beginFill(this.color);
+        this.drawRect(0, 0, 100, 50);
+        this.endFill();
+    }
+
+    addText() {
+        const style = new TextStyle({ fontSize: 16, fill: '#ffffff' });
+        const text = new Text(this.textString, style);
+        text.anchor.set(0.5);
+        text.position.set(50, 25); // Center in rect
+        this.addChild(text); // Text inherits Graphics positioning
+    }
+
+    
