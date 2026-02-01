@@ -59,8 +59,8 @@ export class MainScreen extends Container {
     this.addChild(this.pauseButton);
 
     this.playButton = new Button({
-      text: "Play",
-      width: 175,
+      text: "Press to spin",
+      width: 245,
       height: 110,
     });
     this.playButton.onPress.connect(() => this.bouncer.play());
@@ -72,10 +72,13 @@ export class MainScreen extends Container {
     this.winBox = new RoundedBox({ width: 250, height: 70 });
     this.addChild(this.winBox);
 
-    this.balance = new Label({ text: `BALANCE: 1000`, style: { fill: "black" } });
+    this.balance = new Label({
+      text: `Balance: 1000`,
+      style: { fill: "black" },
+    });
     this.addChild(this.balance);
 
-    this.win = new Label({ text: `WIN: 0`, style: { fill: "black" } });
+    this.win = new Label({ text: `Win: 0`, style: { fill: "black" } });
     this.addChild(this.win);
   }
 
