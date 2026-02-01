@@ -5,11 +5,12 @@ import { waitFor } from "../../../engine/utils/waitFor";
 
 import { DIRECTION, Logo } from "./Logo";
 import type { MainScreen } from "./MainScreen";
+import { Wheel, IWheelOptions } from "./Wheel";
 
 export class Bouncer {
   private static readonly LOGO_COUNT = 8;
   private static readonly ANIMATION_DURATION = 1;
-  private static readonly WAIT_DURATION = 0.5;
+  private static readonly WAIT_DURATION = 1;
 
   public screen!: MainScreen;
 
@@ -20,6 +21,8 @@ export class Bouncer {
   private xMin = -400;
   private xMax = 400;
   private moveLogos = false;
+  private wheel!: Wheel;
+  private wheelAngle = 0;
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -27,6 +30,7 @@ export class Bouncer {
       this.add();
       await waitFor(Bouncer.WAIT_DURATION);
     }
+    this.wheelAdd();
   }
 
   public add(): void {
@@ -42,6 +46,40 @@ export class Bouncer {
     this.activeLogoArray.push(logo);
   }
 
+  public wheelAdd(): void {
+    const options: IWheelOptions = {
+      center: { x: 0, y: 0 },
+      radius: 500,
+      segments: [
+        "2.00",
+        "50.00",
+        "500.00",
+        "2.00",
+        "100.00",
+        "50.00",
+        "2.00",
+        "75.00",
+      ],
+      colors: [
+        "#FF5733",
+        "#33FF57",
+        "#3357FF",
+        "#F333FF",
+        "#33FFF5",
+        "#F5FF33",
+        "#FF33A8",
+        "#A833FF",
+      ],
+      whellAngle: 0,
+    };
+
+    this.wheel = new Wheel(options);
+    this.wheel.alpha = 1;
+    this.wheel.position.set(200, 200);
+    animate(this.wheel, { alpha: 1 }, { duration: Bouncer.ANIMATION_DURATION });
+    this.screen.mainContainer.addChild(this.wheel);
+  }
+
   public remove(): void {
     const logo = this.activeLogoArray.pop();
     if (logo) {
@@ -53,6 +91,19 @@ export class Bouncer {
         })
         .catch((error) => {
           console.error("Error during logo removal animation:", error);
+        });
+    }
+    if (this.wheel) {
+      animate(
+        this.wheel,
+        { alpha: 0 },
+        { duration: Bouncer.ANIMATION_DURATION },
+      )
+        .then(() => {
+          this.screen.mainContainer.removeChild(this.wheel);
+        })
+        .catch((error) => {
+          console.error("Error during wheel removal animation:", error);
         });
     }
   }
