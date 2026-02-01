@@ -49,12 +49,12 @@ export class Wheel extends Graphics {
       this.closePath();
       this.fill();
 
-      const textAngle = startAngle + segmentAngle / 2;
+      const positionTextAngle = startAngle + segmentAngle / 2;
 
-      console.log("textAngle", textAngle);
+      console.log("positionTextAngle", positionTextAngle);
 
       const style = new TextStyle({
-        fontSize: 40,
+        fontSize: 50,
         fill: "#000000",
         align: "center",
         fontFamily: "Arial",
@@ -63,9 +63,10 @@ export class Wheel extends Graphics {
       const text = new Text(this.segments[i], style);
       text.anchor.set(0.5);
       text.position.set(
-        this.center.x + this.radius * 0.6 * Math.cos(textAngle),
-        this.center.y + this.radius * 0.6 * Math.sin(textAngle),
+        this.center.x + this.radius * 0.6 * Math.cos(positionTextAngle),
+        this.center.y + this.radius * 0.6 * Math.sin(positionTextAngle),
       );
+      text.rotation = (i + 0.5) * segmentAngle;
       this.addChild(text); // Text inherits Graphics positioning
       //this.moveTo(this.center.x, this.center.y);
       // this.lineTo(
