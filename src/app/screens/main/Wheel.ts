@@ -13,7 +13,14 @@ export class Wheel extends Graphics {
   private radius: number;
   private segments: string[];
   private colors: string[];
-  private wheelAngle: number = 0;
+  public _wheelAngle: number = 1;
+
+  public get wheelAngle(): number {
+    return this.wheelAngle;
+  }
+  public set wheelAngle(value: number) {
+    this._wheelAngle = value;
+  }
 
   constructor(options: IWheelOptions) {
     super();
@@ -21,11 +28,10 @@ export class Wheel extends Graphics {
     this.radius = options.radius;
     this.segments = options.segments;
     this.colors = options.colors;
-    this.wheelAngle = options.wheelAngle || 0;
+    this._wheelAngle = options.wheelAngle || 0;
     this.drawWheel();
   }
 
-  //drawCtx(ctx: CanvasRenderingContext2D, wheelAngle: number): number {
   drawWheel(): void {
     const segmentAngle = (2 * Math.PI) / this.segments.length;
 
@@ -43,8 +49,8 @@ export class Wheel extends Graphics {
         this.center.x,
         this.center.y,
         this.radius,
-        this.wheelAngle + startAngle,
-        this.wheelAngle + endAngle,
+        this._wheelAngle + startAngle,
+        this._wheelAngle + endAngle,
       );
       this.closePath();
       this.fill();
@@ -60,7 +66,7 @@ export class Wheel extends Graphics {
         fontFamily: "Arial",
         fontWeight: "bold",
       });
-      const text = new Text(this.segments[i], style);
+      const text = new Text({ text: this.segments[i], style });
       text.anchor.set(0.5);
       text.position.set(
         this.center.x + this.radius * 0.6 * Math.cos(positionTextAngle),

@@ -21,8 +21,7 @@ export class Bouncer {
   private xMin = -400;
   private xMax = 400;
   private moveLogos = false;
-  private wheel!: Wheel;
-  private wheelAngle = 0;
+  public wheel!: Wheel;
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -48,7 +47,7 @@ export class Bouncer {
 
   public wheelAdd(): void {
     const options: IWheelOptions = {
-      center: { x: 0, y: -50 },
+      center: { x: 0, y: 0 },
       radius: 400,
       segments: [
         "2.00",
@@ -110,6 +109,9 @@ export class Bouncer {
 
   public play(): void {
     this.moveLogos = !this.moveLogos;
+    // if (this.wheel) {
+    //   this.wheel.wheelAngle += 0.5;
+    // }
   }
 
   public update(): void {
@@ -139,6 +141,7 @@ export class Bouncer {
           logo.y += logo.speed;
           break;
       }
+      this.wheel.rotation += 0.05;
     }
   }
 
