@@ -8,7 +8,7 @@ import type { MainScreen } from "./MainScreen";
 import { Wheel, IWheelOptions } from "./Wheel";
 
 export class Bouncer {
-  private static readonly LOGO_COUNT = 3;
+  private static readonly LOGO_COUNT = 4;
   private static readonly ANIMATION_DURATION = 1;
   private static readonly WAIT_DURATION = 0.5;
 
@@ -48,8 +48,8 @@ export class Bouncer {
 
   public wheelAdd(): void {
     const options: IWheelOptions = {
-      center: { x: 0, y: 0 },
-      radius: 500,
+      center: { x: 0, y: -50 },
+      radius: 400,
       segments: [
         "2.00",
         "50.00",

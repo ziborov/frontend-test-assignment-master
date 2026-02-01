@@ -49,6 +49,19 @@ export class Wheel extends Graphics {
       this.closePath();
       this.fill();
 
+      this.moveTo(this.center.x, this.center.y);
+      this.lineTo(
+        this.center.x + this.radius * Math.cos(this.wheelAngle + startAngle),
+        this.center.y + this.radius * Math.sin(this.wheelAngle + startAngle),
+      );
+      this.lineTo(
+        this.center.x + this.radius * Math.cos(this.wheelAngle + endAngle),
+        this.center.y + this.radius * Math.sin(this.wheelAngle + endAngle),
+      );
+      this.lineTo(this.center.x, this.center.y);
+      this.closePath();
+      this.stroke();
+
       //ctx.stroke();
 
       // this.save();
