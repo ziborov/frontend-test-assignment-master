@@ -114,7 +114,7 @@ export class MainScreen extends Container {
     this.pauseButton.x = 30;
     this.pauseButton.y = 30;
     this.playButton.x = width / 2;
-    this.playButton.y = height - 75;
+    this.playButton.y = height - 50;
 
     this.balance.x = width / 2 + 250;
     this.balance.y = height - 85;
