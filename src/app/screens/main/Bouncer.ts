@@ -8,9 +8,9 @@ import type { MainScreen } from "./MainScreen";
 import { Wheel, IWheelOptions } from "./Wheel";
 
 export class Bouncer {
-  private static readonly LOGO_COUNT = 8;
+  private static readonly LOGO_COUNT = 3;
   private static readonly ANIMATION_DURATION = 1;
-  private static readonly WAIT_DURATION = 1;
+  private static readonly WAIT_DURATION = 0.5;
 
   public screen!: MainScreen;
 
@@ -70,12 +70,12 @@ export class Bouncer {
         "#FF33A8",
         "#A833FF",
       ],
-      whellAngle: 0,
+      wheelAngle: 0,
     };
 
     this.wheel = new Wheel(options);
     this.wheel.alpha = 1;
-    this.wheel.position.set(200, 200);
+    this.wheel.position.set(0, 0);
     animate(this.wheel, { alpha: 1 }, { duration: Bouncer.ANIMATION_DURATION });
     this.screen.mainContainer.addChild(this.wheel);
   }
