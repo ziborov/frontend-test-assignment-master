@@ -73,7 +73,6 @@ export class Bouncer {
         "#FF33A8",
         "#A833FF",
       ],
-      wheelAngle: 0,
     };
 
     this.wheel = new Wheel(options);
@@ -83,13 +82,14 @@ export class Bouncer {
     this.screen.mainContainer.addChild(this.wheel);
   }
 
-  private startWheelRotation(): void {
+  private startWheelRotation(sectionIndex: number): void {
     this.wheelRotationAngle = Math.PI * 2 * 20;
     this.wheel.rotation = this.wheelRotationAngle;
     this.wheelRotationDecreeseSpeed = 0.3;
     this.wheelRotation = true;
     this.wheelTargetAngle =
-      (Math.PI * 2) / Bouncer.WHEEL_SECTIONS_QUANTITY + Math.PI / 8;
+      ((Math.PI * 2) / Bouncer.WHEEL_SECTIONS_QUANTITY) * sectionIndex +
+      Math.PI / 8;
   }
 
   private stopWheelRotation(): void {
@@ -127,7 +127,7 @@ export class Bouncer {
   public play(): void {
     this.wheelRotation = !this.wheelRotation;
     if (this.wheelRotation) {
-      this.startWheelRotation();
+      this.startWheelRotation(2);
     } else {
       this.stopWheelRotation();
     }

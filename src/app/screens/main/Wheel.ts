@@ -5,7 +5,6 @@ export interface IWheelOptions {
   radius: number;
   segments: string[];
   colors: string[];
-  wheelAngle: number;
 }
 
 export class Wheel extends Graphics {
@@ -13,14 +12,6 @@ export class Wheel extends Graphics {
   private radius: number;
   private segments: string[];
   private colors: string[];
-  public _wheelAngle: number = 1;
-
-  public get wheelAngle(): number {
-    return this.wheelAngle;
-  }
-  public set wheelAngle(value: number) {
-    this._wheelAngle = value;
-  }
 
   constructor(options: IWheelOptions) {
     super();
@@ -28,7 +19,6 @@ export class Wheel extends Graphics {
     this.radius = options.radius;
     this.segments = options.segments;
     this.colors = options.colors;
-    this._wheelAngle = options.wheelAngle || 0;
     this.drawWheel();
   }
 
@@ -45,13 +35,7 @@ export class Wheel extends Graphics {
       // Draw segment
       this.beginPath();
       this.moveTo(this.center.x, this.center.y);
-      this.arc(
-        this.center.x,
-        this.center.y,
-        this.radius,
-        this._wheelAngle + startAngle,
-        this._wheelAngle + endAngle,
-      );
+      this.arc(this.center.x, this.center.y, this.radius, startAngle, endAngle);
       this.closePath();
       this.fill();
 
