@@ -20,9 +20,9 @@ export class Bouncer {
   private yMax = 400;
   private xMin = -400;
   private xMax = 400;
-  private moveLogos = false;
+  private wheelRotation = false;
   public wheel!: Wheel;
-  private wheelRotation = 0;
+  private wheelRotationAngle = 0;
   private wheelRotationSpeed = 0;
   private wheelRotationDeceleration = 0.001;
   private isWheelRotationActive = false;
@@ -84,7 +84,7 @@ export class Bouncer {
   }
 
   private startWheelRotation(): void {
-    this.wheelRotation = 0;
+    this.wheelRotationAngle = 0;
     this.wheelRotationSpeed = Math.PI * 2;
     this.wheelRotationDeceleration = 0.01;
     this.isWheelRotationActive = true;
@@ -92,10 +92,11 @@ export class Bouncer {
   }
 
   private stopWheelRotation(): void {
-    this.wheelRotation = 0;
+    this.wheelRotationAngle = 0;
     this.wheelRotationSpeed = 0;
     this.wheelRotationDeceleration = 0.01;
     this.isWheelRotationActive = false;
+    this.wheelRotation = false;
   }
 
   public remove(): void {
@@ -127,8 +128,8 @@ export class Bouncer {
   }
 
   public play(): void {
-    this.moveLogos = !this.moveLogos;
-    if (this.moveLogos) {
+    this.wheelRotation = !this.wheelRotation;
+    if (this.wheelRotation) {
       this.startWheelRotation();
     } else {
       this.stopWheelRotation();
@@ -141,8 +142,8 @@ export class Bouncer {
       this.setLimits(entity);
     });
     if (this.wheel && this.isWheelRotationActive) {
-      this.wheel.rotation = this.wheelRotation;
-      this.wheelRotation += this.wheelRotationSpeed;
+      this.wheel.rotation = this.wheelRotationAngle;
+      this.wheelRotationAngle += this.wheelRotationSpeed;
       this.wheelRotationSpeed -= this.wheelRotationDeceleration;
       if (this.wheelRotationSpeed < 0.08) {
         this.wheelRotationDeceleration = 0.0001;
@@ -150,12 +151,13 @@ export class Bouncer {
       if (this.wheelRotationSpeed < 0) {
         this.wheelRotationSpeed = 0;
         this.isWheelRotationActive = false;
+        this.wheelRotation = false;
       }
     }
   }
 
   private setDirection(logo: Logo): void {
-    if (this.moveLogos) {
+    if (this.wheelRotation) {
       switch (logo.direction) {
         case DIRECTION.NE:
           logo.x += logo.speed;
