@@ -57,8 +57,6 @@ export class Wheel extends Graphics {
 
       const positionTextAngle = startAngle + segmentAngle / 2;
 
-      console.log("positionTextAngle", positionTextAngle);
-
       const style = new TextStyle({
         fontSize: 100,
         fill: "#000000",

@@ -11,6 +11,7 @@ export class Bouncer {
   private static readonly LOGO_COUNT = 4;
   private static readonly ANIMATION_DURATION = 1;
   private static readonly WAIT_DURATION = 0.5;
+  private static readonly WHEEL_SECTIONS_QUANTITY = 8;
 
   public screen!: MainScreen;
 
@@ -20,12 +21,11 @@ export class Bouncer {
   private yMax = 400;
   private xMin = -400;
   private xMax = 400;
+  private wheel!: Wheel;
   private wheelRotation = false;
-  public wheel!: Wheel;
   private wheelRotationAngle = 0;
-  private wheelRotationSpeed = 0;
-  private wheelRotationDeceleration = 0.001;
-  private isWheelRotationActive = false;
+  private wheelRotationDecreeseSpeed = 0;
+  private wheelTargetAngle = 0;
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -84,18 +84,15 @@ export class Bouncer {
   }
 
   private startWheelRotation(): void {
-    this.wheelRotationAngle = 0;
-    this.wheelRotationSpeed = Math.PI * 2;
-    this.wheelRotationDeceleration = 0.01;
-    this.isWheelRotationActive = true;
-    this.wheel.rotation = 0;
+    this.wheelRotationAngle = Math.PI * 2 * 20;
+    this.wheel.rotation = this.wheelRotationAngle;
+    this.wheelRotationDecreeseSpeed = 0.3;
+    this.wheelRotation = true;
+    this.wheelTargetAngle =
+      (Math.PI * 2) / Bouncer.WHEEL_SECTIONS_QUANTITY + Math.PI / 8;
   }
 
   private stopWheelRotation(): void {
-    this.wheelRotationAngle = 0;
-    this.wheelRotationSpeed = 0;
-    this.wheelRotationDeceleration = 0.01;
-    this.isWheelRotationActive = false;
     this.wheelRotation = false;
   }
 
@@ -136,24 +133,33 @@ export class Bouncer {
     }
   }
 
+  private updateWheelRotation(): void {
+    if (this.wheel && this.wheelRotation) {
+      // console.log(
+      //   "this.wheelRotationAngle: ",
+      //   this.wheelRotationAngle,
+      //   "this.wheelRotationDecreeseSpeed: ",
+      //   this.wheelRotationDecreeseSpeed,
+      //   "this.wheelTargetAngle: ",
+      //   this.wheelTargetAngle,
+      // );
+      if (this.wheelRotationAngle < this.wheelTargetAngle) {
+        this.wheelRotation = false;
+      } else {
+        this.wheel.rotation = this.wheelRotationAngle;
+        this.wheelRotationAngle -= this.wheelRotationDecreeseSpeed;
+        this.wheelRotationDecreeseSpeed =
+          this.wheelRotationDecreeseSpeed * 0.997598;
+      }
+    }
+  }
+
   public update(): void {
     this.allLogoArray.forEach((entity) => {
       this.setDirection(entity);
       this.setLimits(entity);
     });
-    if (this.wheel && this.isWheelRotationActive) {
-      this.wheel.rotation = this.wheelRotationAngle;
-      this.wheelRotationAngle += this.wheelRotationSpeed;
-      this.wheelRotationSpeed -= this.wheelRotationDeceleration;
-      if (this.wheelRotationSpeed < 0.08) {
-        this.wheelRotationDeceleration = 0.0001;
-      }
-      if (this.wheelRotationSpeed < 0) {
-        this.wheelRotationSpeed = 0;
-        this.isWheelRotationActive = false;
-        this.wheelRotation = false;
-      }
-    }
+    this.updateWheelRotation();
   }
 
   private setDirection(logo: Logo): void {
