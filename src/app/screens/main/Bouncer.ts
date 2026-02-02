@@ -139,7 +139,13 @@ export class Bouncer {
     this.playButton = playButton;
     this.wheelRotation = !this.wheelRotation;
     if (this.wheelRotation) {
-      this.startWheelRotation(2);
+      const randomIndex = Math.floor(
+        Math.random() * this.wheel.weightsIndexes.length,
+      );
+      const sectionIndex = this.wheel.weightsIndexes[randomIndex];
+      this.startWheelRotation(sectionIndex);
+      console.log("Spinning to section index: ", sectionIndex);
+      console.log("Section value: ", this.wheel.segments[sectionIndex]);
       return false;
     } else {
       this.stopWheelRotation();
@@ -148,26 +154,24 @@ export class Bouncer {
   }
 
   private updateWheelRotation(): void {
-    if (this.wheel && this.wheelRotation) {
-      // console.log(
-      //   "this.wheelRotationAngle: ",
-      //   this.wheelRotationAngle,
-      //   "this.wheelRotationDecreeseSpeed: ",
-      //   this.wheelRotationDecreeseSpeed,
-      //   "this.wheelTargetAngle: ",
-      //   this.wheelTargetAngle,
-      // );
-      if (this.wheelRotationAngle < this.wheelTargetAngle) {
-        this.wheelRotation = false;
-        if (this.playButton) {
-          this.playButton.text = "Press to spin";
-        }
-      } else {
-        this.wheel.rotation = this.wheelRotationAngle;
-        this.wheelRotationAngle -= this.wheelRotationDecreeseSpeed;
-        this.wheelRotationDecreeseSpeed =
-          this.wheelRotationDecreeseSpeed * 0.997598;
+    console.log(
+      "this.wheelRotationAngle: ",
+      this.wheelRotationAngle,
+      "this.wheelRotationDecreeseSpeed: ",
+      this.wheelRotationDecreeseSpeed,
+      "this.wheelTargetAngle: ",
+      this.wheelTargetAngle,
+    );
+    if (this.wheelRotationAngle < this.wheelTargetAngle) {
+      this.wheelRotation = false;
+      if (this.playButton) {
+        this.playButton.text = "Press to spin";
       }
+    } else {
+      this.wheel.rotation = this.wheelRotationAngle;
+      this.wheelRotationAngle -= this.wheelRotationDecreeseSpeed;
+      this.wheelRotationDecreeseSpeed =
+        this.wheelRotationDecreeseSpeed * 0.997598;
     }
   }
 
@@ -176,7 +180,9 @@ export class Bouncer {
       this.setDirection(entity);
       this.setLimits(entity);
     });
-    this.updateWheelRotation();
+    if (this.wheel && this.wheelRotation) {
+      this.updateWheelRotation();
+    }
   }
 
   private setDirection(logo: Logo): void {

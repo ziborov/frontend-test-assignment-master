@@ -12,7 +12,7 @@ export interface IWheelOptions {
 export class Wheel extends Graphics {
   private center: { x: number; y: number };
   private radius: number;
-  private segments: string[];
+  public segments: string[];
   private colors: string[];
   public weights: number[];
   public weightsIndexes: number[];
