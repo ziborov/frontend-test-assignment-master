@@ -141,8 +141,12 @@ export class Bouncer {
       this.setLimits(entity);
     });
     if (this.wheel && this.isWheelRotationActive) {
-      this.wheel.rotation += this.wheelRotationSpeed;
+      this.wheel.rotation = this.wheelRotation;
+      this.wheelRotation += this.wheelRotationSpeed;
       this.wheelRotationSpeed -= this.wheelRotationDeceleration;
+      if (this.wheelRotationSpeed < 0.08) {
+        this.wheelRotationDeceleration = 0.0001;
+      }
       if (this.wheelRotationSpeed < 0) {
         this.wheelRotationSpeed = 0;
         this.isWheelRotationActive = false;
