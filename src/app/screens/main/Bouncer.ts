@@ -1,6 +1,6 @@
 import { animate } from "motion";
 
-import { randomFloat } from "../../../engine/utils/random";
+import { randomFloat, randomInt } from "../../../engine/utils/random";
 import { waitFor } from "../../../engine/utils/waitFor";
 
 import { DIRECTION, Logo } from "./Logo";
@@ -139,13 +139,11 @@ export class Bouncer {
     this.playButton = playButton;
     this.wheelRotation = !this.wheelRotation;
     if (this.wheelRotation) {
-      const randomIndex = Math.floor(
-        Math.random() * this.wheel.weightsIndexes.length,
-      );
+      const randomIndex = randomInt(0, this.wheel.weightsIndexes.length - 1);
       const sectionIndex = this.wheel.weightsIndexes[randomIndex];
-      this.startWheelRotation(sectionIndex);
       console.log("Spinning to section index: ", sectionIndex);
       console.log("Section value: ", this.wheel.segments[sectionIndex]);
+      this.startWheelRotation(sectionIndex);
       return false;
     } else {
       this.stopWheelRotation();
