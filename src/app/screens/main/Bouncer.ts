@@ -22,6 +22,10 @@ export class Bouncer {
   private xMax = 400;
   private moveLogos = false;
   public wheel!: Wheel;
+  private wheelRotation = 0;
+  private wheelRotationSpeed = 0;
+  private wheelRotationDeceleration = 0.001;
+  private isWheelRotationActive = false;
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -79,6 +83,21 @@ export class Bouncer {
     this.screen.mainContainer.addChild(this.wheel);
   }
 
+  private startWheelRotation(): void {
+    this.wheelRotation = 0;
+    this.wheelRotationSpeed = Math.PI * 2;
+    this.wheelRotationDeceleration = 0.01;
+    this.isWheelRotationActive = true;
+    this.wheel.rotation = 0;
+  }
+
+  private stopWheelRotation(): void {
+    this.wheelRotation = 0;
+    this.wheelRotationSpeed = 0;
+    this.wheelRotationDeceleration = 0.01;
+    this.isWheelRotationActive = false;
+  }
+
   public remove(): void {
     const logo = this.activeLogoArray.pop();
     if (logo) {
@@ -109,9 +128,11 @@ export class Bouncer {
 
   public play(): void {
     this.moveLogos = !this.moveLogos;
-    // if (this.wheel) {
-    //   this.wheel.wheelAngle += 0.5;
-    // }
+    if (this.moveLogos) {
+      this.startWheelRotation();
+    } else {
+      this.stopWheelRotation();
+    }
   }
 
   public update(): void {
@@ -119,6 +140,14 @@ export class Bouncer {
       this.setDirection(entity);
       this.setLimits(entity);
     });
+    if (this.wheel && this.isWheelRotationActive) {
+      this.wheel.rotation += this.wheelRotationSpeed;
+      this.wheelRotationSpeed -= this.wheelRotationDeceleration;
+      if (this.wheelRotationSpeed < 0) {
+        this.wheelRotationSpeed = 0;
+        this.isWheelRotationActive = false;
+      }
+    }
   }
 
   private setDirection(logo: Logo): void {
@@ -141,7 +170,6 @@ export class Bouncer {
           logo.y += logo.speed;
           break;
       }
-      this.wheel.rotation += 0.05;
     }
   }
 
