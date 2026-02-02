@@ -5,6 +5,8 @@ export interface IWheelOptions {
   radius: number;
   segments: string[];
   colors: string[];
+  weights: number[];
+  weightsIndexes: number[];
 }
 
 export class Wheel extends Graphics {
@@ -12,6 +14,8 @@ export class Wheel extends Graphics {
   private radius: number;
   private segments: string[];
   private colors: string[];
+  public weights: number[];
+  public weightsIndexes: number[];
 
   constructor(options: IWheelOptions) {
     super();
@@ -19,6 +23,8 @@ export class Wheel extends Graphics {
     this.radius = options.radius;
     this.segments = options.segments;
     this.colors = options.colors;
+    this.weights = options.weights;
+    this.weightsIndexes = options.weightsIndexes;
     this.drawWheel();
   }
 

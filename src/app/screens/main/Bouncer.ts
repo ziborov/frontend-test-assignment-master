@@ -6,6 +6,7 @@ import { waitFor } from "../../../engine/utils/waitFor";
 import { DIRECTION, Logo } from "./Logo";
 import type { MainScreen } from "./MainScreen";
 import { Wheel, IWheelOptions } from "./Wheel";
+import { FancyButton } from "@pixi/ui";
 
 export class Bouncer {
   private static readonly LOGO_COUNT = 4;
@@ -26,6 +27,7 @@ export class Bouncer {
   private wheelRotationAngle = 0;
   private wheelRotationDecreeseSpeed = 0;
   private wheelTargetAngle = 0;
+  private playButton: FancyButton = new FancyButton({});
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -73,7 +75,16 @@ export class Bouncer {
         "#FF33A8",
         "#A833FF",
       ],
+      weights: [200, 76, 12, 200, 62, 81, 200, 74],
+      weightsIndexes: [],
     };
+
+    for (let i = 0; i < options.weights.length; i++) {
+      const weight = options.weights[i];
+      for (let j = 0; j < weight; j++) {
+        options.weightsIndexes.push(i);
+      }
+    }
 
     this.wheel = new Wheel(options);
     this.wheel.alpha = 1;
@@ -124,12 +135,15 @@ export class Bouncer {
     }
   }
 
-  public play(): void {
+  public play(playButton: FancyButton): boolean {
+    this.playButton = playButton;
     this.wheelRotation = !this.wheelRotation;
     if (this.wheelRotation) {
       this.startWheelRotation(2);
+      return false;
     } else {
       this.stopWheelRotation();
+      return true;
     }
   }
 
@@ -145,6 +159,9 @@ export class Bouncer {
       // );
       if (this.wheelRotationAngle < this.wheelTargetAngle) {
         this.wheelRotation = false;
+        if (this.playButton) {
+          this.playButton.text = "Press to spin";
+        }
       } else {
         this.wheel.rotation = this.wheelRotationAngle;
         this.wheelRotationAngle -= this.wheelRotationDecreeseSpeed;

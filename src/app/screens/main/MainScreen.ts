@@ -63,7 +63,11 @@ export class MainScreen extends Container {
       width: 245,
       height: 110,
     });
-    this.playButton.onPress.connect(() => this.bouncer.play());
+    this.playButton.onPress.connect(() => {
+      const isPlaying = this.bouncer.play(this.playButton);
+      console.log("isPlaying: ", isPlaying);
+      this.playButton.text = isPlaying ? "Press to spin" : "Stop spinning";
+    });
     this.addChild(this.playButton);
 
     this.balanceBox = new RoundedBox({ width: 250, height: 70 });
@@ -80,6 +84,13 @@ export class MainScreen extends Container {
 
     this.win = new Label({ text: `Win: 0`, style: { fill: "black" } });
     this.addChild(this.win);
+  }
+
+  public processData(callback: CallableFunction): void {
+    console.log("Processing data...");
+    const result = "Task completed successfully!";
+    // Invoke the callback function
+    callback(result);
   }
 
   /** Prepare the screen just before showing */
