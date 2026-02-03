@@ -6,6 +6,7 @@ import { waitFor } from "../../../engine/utils/waitFor";
 import { DIRECTION, Logo } from "./Logo";
 import type { MainScreen } from "./MainScreen";
 import { Wheel, IWheelOptions } from "./Wheel";
+import { WinArrow } from "./WinArrow";
 import { FancyButton } from "@pixi/ui";
 
 export class Bouncer {
@@ -29,6 +30,7 @@ export class Bouncer {
   private wheelTargetAngle = 0;
   private playButton: FancyButton = new FancyButton({});
   private sectionIndex = 0;
+  private winArrow: WinArrow = new WinArrow();
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -37,6 +39,7 @@ export class Bouncer {
       await waitFor(Bouncer.WAIT_DURATION);
     }
     this.wheelAdd();
+    this.winArrowAdd();
   }
 
   public add(): void {
@@ -56,16 +59,7 @@ export class Bouncer {
     const options: IWheelOptions = {
       center: { x: 0, y: 0 },
       radius: 400,
-      segments: [
-        "2.00",
-        "50.00",
-        "500.00",
-        "2.00",
-        "100.00",
-        "50.00",
-        "2.00",
-        "75.00",
-      ],
+      segments: [2.0, 50.0, 500.0, 2.0, 100.0, 50.0, 2.0, 75.0],
       colors: [
         "#FF5733",
         "#33FF57",
@@ -92,6 +86,11 @@ export class Bouncer {
     this.wheel.position.set(0, 0);
     animate(this.wheel, { alpha: 1 }, { duration: Bouncer.ANIMATION_DURATION });
     this.screen.mainContainer.addChild(this.wheel);
+  }
+
+  public winArrowAdd(): void {
+    this.winArrow.position.set(550, 0);
+    this.screen.mainContainer.addChild(this.winArrow);
   }
 
   private startWheelRotation(): void {

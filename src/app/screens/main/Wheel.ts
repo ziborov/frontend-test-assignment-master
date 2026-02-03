@@ -3,7 +3,7 @@ import { Graphics, Text, TextStyle } from "pixi.js";
 export interface IWheelOptions {
   center: { x: number; y: number };
   radius: number;
-  segments: string[];
+  segments: number[];
   colors: string[];
   weights: number[];
   weightsIndexes: number[];
@@ -12,7 +12,7 @@ export interface IWheelOptions {
 export class Wheel extends Graphics {
   private center: { x: number; y: number };
   private radius: number;
-  public segments: string[];
+  public segments: number[];
   private colors: string[];
   public weights: number[];
   public weightsIndexes: number[];
