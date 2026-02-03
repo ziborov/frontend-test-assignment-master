@@ -8,6 +8,8 @@ import type { MainScreen } from "./MainScreen";
 import { Wheel, IWheelOptions } from "./Wheel";
 import { WinArrow } from "./WinArrow";
 import { FancyButton } from "@pixi/ui";
+import { WinningPopup } from "../../popups/WinningPopup";
+import { engine } from "../../getEngine";
 
 export class Bouncer {
   private static readonly LOGO_COUNT = 4;
@@ -164,6 +166,7 @@ export class Bouncer {
       if (this.playButton) {
         this.playButton.text = "Press to spin";
       }
+      engine().navigation.presentPopup(WinningPopup);
     } else {
       this.wheel.rotation = this.wheelRotationAngle;
       this.wheelRotationAngle -= this.wheelRotationDecreeseSpeed;
