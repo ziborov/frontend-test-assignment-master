@@ -10,12 +10,14 @@ import { WinArrow } from "./WinArrow";
 import { FancyButton } from "@pixi/ui";
 import { WinningPopup } from "../../popups/WinningPopup";
 import { engine } from "../../getEngine";
+import { Label } from "../../ui/Label";
 
 export class Bouncer {
   private static readonly LOGO_COUNT = 4;
   private static readonly ANIMATION_DURATION = 1;
   private static readonly WAIT_DURATION = 0.5;
   private static readonly WHEEL_SECTIONS_QUANTITY = 8;
+  private readonly BET = 10;
 
   public screen!: MainScreen;
 
@@ -28,11 +30,19 @@ export class Bouncer {
   private wheel!: Wheel;
   private wheelRotation = false;
   private wheelRotationAngle = 0;
-  private wheelRotationDecreeseSpeed = 0;
+  private wheelRotationDecrementSpeed = 0;
   private wheelTargetAngle = 0;
   private playButton: FancyButton = new FancyButton({});
   private sectionIndex = 0;
   private winArrow: WinArrow = new WinArrow();
+  private balance: Label = new Label();
+  private win: Label = new Label();
+  private balanceValue = 1000;
+
+  constructor(balance: Label, win: Label) {
+    this.balance = balance;
+    this.win = win;
+  }
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -98,7 +108,7 @@ export class Bouncer {
   private startWheelRotation(): void {
     this.wheelRotationAngle = Math.PI * 2 * 20;
     this.wheel.rotation = this.wheelRotationAngle;
-    this.wheelRotationDecreeseSpeed = 0.3;
+    this.wheelRotationDecrementSpeed = 0.3;
     this.wheelRotation = true;
     const sectorAngle = -(Math.PI * 2) / Bouncer.WHEEL_SECTIONS_QUANTITY;
     this.wheelTargetAngle = sectorAngle * this.sectionIndex - Math.PI / 8;
@@ -142,8 +152,8 @@ export class Bouncer {
     if (this.wheelRotation) {
       const randomIndex = randomInt(0, this.wheel.weightsIndexes.length - 1);
       this.sectionIndex = this.wheel.weightsIndexes[randomIndex];
-      console.log("Spinning to section index: ", this.sectionIndex);
-      console.log("Section value: ", this.wheel.segments[this.sectionIndex]);
+      this.balanceValue -= this.BET;
+      this.balance.text = `Balance: ${this.balanceValue}`;
       this.startWheelRotation();
       return false;
     } else {
@@ -152,29 +162,37 @@ export class Bouncer {
     }
   }
 
-  private updateWheelRotation(): void {
+  private setWinning(): void {
+    this.wheelRotation = false;
+    if (this.playButton) {
+      this.playButton.text = "Press to spin";
+    }
+    this.win.text = `Win: ${this.wheel.segments[this.sectionIndex]}`;
+    this.balanceValue += this.wheel.segments[this.sectionIndex] as number;
+    this.balance.text = `Balance: ${this.balanceValue}`;
+    WinningPopup.WINNING_STRING = `You won ${this.wheel.segments[this.sectionIndex]}!`;
+    engine().navigation.presentPopup(WinningPopup);
+  }
+
+  private wheelRotationDecrement(): void {
     // console.log(
     //   "this.wheelRotationAngle: ",
     //   this.wheelRotationAngle,
-    //   "this.wheelRotationDecreeseSpeed: ",
-    //   this.wheelRotationDecreeseSpeed,
+    //   "this.wheelRotationDecrementSpeed: ",
+    //   this.wheelRotationDecrementSpeed,
     //   "this.wheelTargetAngle: ",
     //   this.wheelTargetAngle,
     // );
+    this.wheel.rotation = this.wheelRotationAngle;
+    this.wheelRotationAngle -= this.wheelRotationDecrementSpeed;
+    this.wheelRotationDecrementSpeed = this.wheelRotationDecrementSpeed * 0.998;
+  }
+
+  private updateWheelRotation(): void {
     if (this.wheelRotationAngle < this.wheelTargetAngle) {
-      this.wheelRotation = false;
-      if (this.playButton) {
-        this.playButton.text = "Press to spin";
-      }
-      WinningPopup.WINNING_STRING = `You won ${this.wheel.segments[this.sectionIndex]}!`;
-      engine().navigation.presentPopup(WinningPopup);
+      this.setWinning();
     } else {
-      this.wheel.rotation = this.wheelRotationAngle;
-      this.wheelRotationAngle -= this.wheelRotationDecreeseSpeed;
-      this.wheelRotationDecreeseSpeed =
-        //  this.wheelRotationDecreeseSpeed * 0.997598;
-        this.wheelRotationDecreeseSpeed * 0.998;
-      //this.wheelRotationDecreeseSpeed * 0.999;
+      this.wheelRotationDecrement();
     }
   }
 

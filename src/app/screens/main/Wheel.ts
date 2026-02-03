@@ -36,7 +36,7 @@ export class Wheel extends Graphics {
       const endAngle = startAngle + segmentAngle;
 
       // Set fill color
-      this.fillStyle = { color: this.colors[i], alpha: 0.61 };
+      this.fillStyle = { color: this.colors[i], alpha: 0.8 };
 
       // Draw segment
       this.beginPath();
@@ -49,7 +49,7 @@ export class Wheel extends Graphics {
 
       const style = new TextStyle({
         fontSize: 100,
-        fill: { color: "#000000", alpha: 0.61 },
+        fill: { color: "#000000", alpha: 0.8 },
         align: "center",
         fontFamily: "Arial",
         fontWeight: "bold",
@@ -65,7 +65,7 @@ export class Wheel extends Graphics {
     }
 
     // Draw center circle
-    this.fillStyle = { color: "#000000", alpha: 0.61 };
+    this.fillStyle = { color: "#000000", alpha: 0.8 };
     this.beginPath();
     this.arc(this.center.x, this.center.y, this.radius * 0.1, 0, 2 * Math.PI);
     this.fill();

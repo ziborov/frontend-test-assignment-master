@@ -31,3 +31,5 @@ class LabeledShape extends Graphics {
     }
 
     
+    //  this.wheelRotationDecreeseSpeed * 0.997598;
+    

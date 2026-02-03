@@ -32,7 +32,13 @@ export class MainScreen extends Container {
 
     this.mainContainer = new Container();
     this.addChild(this.mainContainer);
-    this.bouncer = new Bouncer();
+    this.balance = new Label({
+      text: `Balance: 1000`,
+      style: { fill: "black" },
+    });
+
+    this.win = new Label({ text: `Win: 0`, style: { fill: "black" } });
+    this.bouncer = new Bouncer(this.balance, this.win);
 
     const buttonAnimations = {
       hover: {
@@ -75,13 +81,8 @@ export class MainScreen extends Container {
     this.winBox = new RoundedBox({ width: 250, height: 70 });
     this.addChild(this.winBox);
 
-    this.balance = new Label({
-      text: `Balance: 1000`,
-      style: { fill: "black" },
-    });
     this.addChild(this.balance);
 
-    this.win = new Label({ text: `Win: 0`, style: { fill: "black" } });
     this.addChild(this.win);
   }
 
