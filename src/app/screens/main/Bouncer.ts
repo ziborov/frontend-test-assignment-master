@@ -166,6 +166,7 @@ export class Bouncer {
       if (this.playButton) {
         this.playButton.text = "Press to spin";
       }
+      WinningPopup.WINNING_STRING = `You won ${this.wheel.segments[this.sectionIndex]}!`;
       engine().navigation.presentPopup(WinningPopup);
     } else {
       this.wheel.rotation = this.wheelRotationAngle;

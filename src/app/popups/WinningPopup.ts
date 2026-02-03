@@ -8,6 +8,7 @@ import { RoundedBox } from "../ui/RoundedBox";
 
 /** Popup that shows up when gameplay is paused */
 export class WinningPopup extends Container {
+  public static WINNING_STRING = "You Won!";
   /** The dark semi-transparent background covering current screen */
   private bg: Sprite;
   /** Container for the popup UI components */
@@ -34,7 +35,7 @@ export class WinningPopup extends Container {
     this.panel.addChild(this.panelBase);
 
     this.title = new Label({
-      text: "You Won!",
+      text: WinningPopup.WINNING_STRING,
       style: { fill: 0xec1561, fontSize: 50 },
     });
     this.title.y = -80;
