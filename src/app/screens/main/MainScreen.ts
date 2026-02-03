@@ -65,7 +65,6 @@ export class MainScreen extends Container {
     });
     this.playButton.onPress.connect(() => {
       const isPlaying = this.bouncer.play(this.playButton);
-      console.log("isPlaying: ", isPlaying);
       this.playButton.text = isPlaying ? "Press to spin" : "Stop spinning";
     });
     this.addChild(this.playButton);

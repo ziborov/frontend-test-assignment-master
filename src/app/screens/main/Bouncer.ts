@@ -28,6 +28,7 @@ export class Bouncer {
   private wheelRotationDecreeseSpeed = 0;
   private wheelTargetAngle = 0;
   private playButton: FancyButton = new FancyButton({});
+  private sectionIndex = 0;
 
   public async show(screen: MainScreen): Promise<void> {
     this.screen = screen;
@@ -93,14 +94,13 @@ export class Bouncer {
     this.screen.mainContainer.addChild(this.wheel);
   }
 
-  private startWheelRotation(sectionIndex: number): void {
+  private startWheelRotation(): void {
     this.wheelRotationAngle = Math.PI * 2 * 20;
     this.wheel.rotation = this.wheelRotationAngle;
     this.wheelRotationDecreeseSpeed = 0.3;
     this.wheelRotation = true;
-    this.wheelTargetAngle =
-      ((Math.PI * 2) / Bouncer.WHEEL_SECTIONS_QUANTITY) * sectionIndex +
-      Math.PI / 8;
+    const sectorAngle = -(Math.PI * 2) / Bouncer.WHEEL_SECTIONS_QUANTITY;
+    this.wheelTargetAngle = sectorAngle * this.sectionIndex - Math.PI / 8;
   }
 
   private stopWheelRotation(): void {
@@ -140,10 +140,10 @@ export class Bouncer {
     this.wheelRotation = !this.wheelRotation;
     if (this.wheelRotation) {
       const randomIndex = randomInt(0, this.wheel.weightsIndexes.length - 1);
-      const sectionIndex = this.wheel.weightsIndexes[randomIndex];
-      console.log("Spinning to section index: ", sectionIndex);
-      console.log("Section value: ", this.wheel.segments[sectionIndex]);
-      this.startWheelRotation(sectionIndex);
+      this.sectionIndex = this.wheel.weightsIndexes[randomIndex];
+      console.log("Spinning to section index: ", this.sectionIndex);
+      console.log("Section value: ", this.wheel.segments[this.sectionIndex]);
+      this.startWheelRotation();
       return false;
     } else {
       this.stopWheelRotation();
@@ -152,14 +152,14 @@ export class Bouncer {
   }
 
   private updateWheelRotation(): void {
-    console.log(
-      "this.wheelRotationAngle: ",
-      this.wheelRotationAngle,
-      "this.wheelRotationDecreeseSpeed: ",
-      this.wheelRotationDecreeseSpeed,
-      "this.wheelTargetAngle: ",
-      this.wheelTargetAngle,
-    );
+    // console.log(
+    //   "this.wheelRotationAngle: ",
+    //   this.wheelRotationAngle,
+    //   "this.wheelRotationDecreeseSpeed: ",
+    //   this.wheelRotationDecreeseSpeed,
+    //   "this.wheelTargetAngle: ",
+    //   this.wheelTargetAngle,
+    // );
     if (this.wheelRotationAngle < this.wheelTargetAngle) {
       this.wheelRotation = false;
       if (this.playButton) {
@@ -169,7 +169,9 @@ export class Bouncer {
       this.wheel.rotation = this.wheelRotationAngle;
       this.wheelRotationAngle -= this.wheelRotationDecreeseSpeed;
       this.wheelRotationDecreeseSpeed =
-        this.wheelRotationDecreeseSpeed * 0.997598;
+        //  this.wheelRotationDecreeseSpeed * 0.997598;
+        this.wheelRotationDecreeseSpeed * 0.998;
+      //this.wheelRotationDecreeseSpeed * 0.999;
     }
   }
 
