@@ -71,6 +71,11 @@ export class MainScreen extends Container {
       height: 110,
     });
     this.playButton.onPress.connect(async () => {
+      if (this.bouncer.toMainTrigger) {
+        this.bouncer.toMainTrigger = false;
+        this.bouncer.toMainTrigger = false;
+        await this.bouncer.unHide();
+      }
       const isPlaying = this.bouncer.play(this.playButton);
       this.playButton.text = (await isPlaying)
         ? "Press to spin"
@@ -86,11 +91,12 @@ export class MainScreen extends Container {
     this.toMainButton.onPress.connect(() => {
       if (!this.bouncer.toMainTrigger) {
         this.bouncer.toMainTrigger = true;
+        this.bouncer.wheelRotation = false;
         this.playButton.text = "Press to spin";
         this.bouncer.hide();
         engine().audio.bgm.play("main/sounds/bgm-main.mp3", {
           volume: 1.0,
-          loop: true,
+          loop: false,
         });
       }
       // } else {

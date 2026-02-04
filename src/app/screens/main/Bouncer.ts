@@ -28,7 +28,7 @@ export class Bouncer {
   private xMin = -400;
   private xMax = 400;
   private wheel!: Wheel;
-  private wheelRotation = false;
+  public wheelRotation = false;
   private wheelRotationAngle = 0;
   private wheelRotationDecrementSpeed = 0;
   private wheelTargetAngle = 0;
@@ -125,6 +125,23 @@ export class Bouncer {
     this.wheelRotation = false;
   }
 
+  public unHide(): void {
+    if (this.wheel) {
+      animate(
+        this.wheel,
+        { alpha: 1 },
+        { duration: Bouncer.ANIMATION_DURATION },
+      );
+    }
+    if (this.winArrow) {
+      animate(
+        this.winArrow,
+        { alpha: 1 },
+        { duration: Bouncer.ANIMATION_DURATION },
+      );
+    }
+  }
+
   public hide(): void {
     if (this.wheel) {
       animate(
@@ -184,11 +201,6 @@ export class Bouncer {
   }
 
   public async play(playButton: FancyButton): Promise<boolean> {
-    if (this.toMainTrigger) {
-      this.toMainTrigger = false;
-      await this.show(this.screen);
-      this.wheelRotation = true;
-    }
     this.playButton = playButton;
     this.wheelRotation = !this.wheelRotation;
     if (this.wheelRotation) {
