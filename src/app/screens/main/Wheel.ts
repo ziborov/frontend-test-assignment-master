@@ -16,6 +16,7 @@ export class Wheel extends Graphics {
   private colors: string[];
   public weights: number[];
   public weightsIndexes: number[];
+  public toMainScreenMode = false;
 
   constructor(options: IWheelOptions) {
     super();

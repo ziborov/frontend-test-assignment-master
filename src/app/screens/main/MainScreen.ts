@@ -26,6 +26,7 @@ export class MainScreen extends Container {
   private balanceBox: RoundedBox;
   private winBox: RoundedBox;
   private paused = false;
+  private toMainButton: FancyButton;
 
   constructor() {
     super();
@@ -74,6 +75,16 @@ export class MainScreen extends Container {
       this.playButton.text = isPlaying ? "Press to spin" : "Stop spinning";
     });
     this.addChild(this.playButton);
+
+    this.toMainButton = new FancyButton({
+      defaultView: "icon-back.png",
+      anchor: 0.5,
+      animations: buttonAnimations,
+    });
+    this.toMainButton.onPress.connect(() =>
+      engine().navigation.presentPopup(PausePopup),
+    );
+    this.addChild(this.toMainButton);
 
     this.balanceBox = new RoundedBox({ width: 250, height: 70 });
     this.addChild(this.balanceBox);
@@ -129,7 +140,9 @@ export class MainScreen extends Container {
     this.pauseButton.y = 30;
     this.playButton.x = width / 2;
     this.playButton.y = height - 50;
-
+    this.toMainButton.x = 30;
+    this.toMainButton.y = 90;
+    this.toMainButton.scale.set(0.15);
     this.balance.x = width / 2 + 250;
     this.balance.y = height - 85;
     this.balanceBox.x = width / 2 + 250;
