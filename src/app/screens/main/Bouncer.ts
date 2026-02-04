@@ -38,6 +38,7 @@ export class Bouncer {
   private balance: Label = new Label();
   private win: Label = new Label();
   private balanceValue = 1000;
+  public toMainTrigger: boolean = false;
 
   constructor(balance: Label, win: Label) {
     this.balance = balance;
@@ -102,6 +103,11 @@ export class Bouncer {
 
   public winArrowAdd(): void {
     this.winArrow.position.set(550, 0);
+    animate(
+      this.winArrow,
+      { alpha: 1 },
+      { duration: Bouncer.ANIMATION_DURATION },
+    );
     this.screen.mainContainer.addChild(this.winArrow);
   }
 
@@ -117,6 +123,23 @@ export class Bouncer {
 
   private stopWheelRotation(): void {
     this.wheelRotation = false;
+  }
+
+  public hide(): void {
+    if (this.wheel) {
+      animate(
+        this.wheel,
+        { alpha: 0 },
+        { duration: Bouncer.ANIMATION_DURATION },
+      );
+    }
+    if (this.winArrow) {
+      animate(
+        this.winArrow,
+        { alpha: 0 },
+        { duration: Bouncer.ANIMATION_DURATION },
+      );
+    }
   }
 
   public remove(): void {
@@ -145,9 +168,27 @@ export class Bouncer {
           console.error("Error during wheel removal animation:", error);
         });
     }
+    if (this.winArrow) {
+      animate(
+        this.winArrow,
+        { alpha: 0 },
+        { duration: Bouncer.ANIMATION_DURATION },
+      )
+        .then(() => {
+          this.screen.mainContainer.removeChild(this.winArrow);
+        })
+        .catch((error) => {
+          console.error("Error during win arrow removal animation:", error);
+        });
+    }
   }
 
-  public play(playButton: FancyButton): boolean {
+  public async play(playButton: FancyButton): Promise<boolean> {
+    if (this.toMainTrigger) {
+      this.toMainTrigger = false;
+      await this.show(this.screen);
+      this.wheelRotation = true;
+    }
     this.playButton = playButton;
     this.wheelRotation = !this.wheelRotation;
     if (this.wheelRotation) {

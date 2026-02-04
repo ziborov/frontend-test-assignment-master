@@ -27,7 +27,6 @@ export class MainScreen extends Container {
   private winBox: RoundedBox;
   private paused = false;
   private toMainButton: FancyButton;
-  private toMainTrigger: boolean = false;
 
   constructor() {
     super();
@@ -71,9 +70,11 @@ export class MainScreen extends Container {
       width: 245,
       height: 110,
     });
-    this.playButton.onPress.connect(() => {
+    this.playButton.onPress.connect(async () => {
       const isPlaying = this.bouncer.play(this.playButton);
-      this.playButton.text = isPlaying ? "Press to spin" : "Stop spinning";
+      this.playButton.text = (await isPlaying)
+        ? "Press to spin"
+        : "Stop spinning";
     });
     this.addChild(this.playButton);
 
@@ -83,8 +84,17 @@ export class MainScreen extends Container {
       animations: buttonAnimations,
     });
     this.toMainButton.onPress.connect(() => {
-      this.toMainTrigger = true;
-      this.playButton.text = "Press to spin";
+      if (!this.bouncer.toMainTrigger) {
+        this.bouncer.toMainTrigger = true;
+        this.playButton.text = "Press to spin";
+        this.bouncer.hide();
+        //engine().navigation.navigateToScreen("home");
+      } else {
+        this.bouncer.toMainTrigger = false;
+        this.playButton.text = "Press to spin";
+        this.bouncer.wheelAdd();
+        this.bouncer.winArrowAdd();
+      }
     });
     this.addChild(this.toMainButton);
 
