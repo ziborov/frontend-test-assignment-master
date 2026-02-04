@@ -249,7 +249,7 @@ export class Bouncer {
   }
 
   private setDirection(logo: Logo): void {
-    if (this.wheelRotation) {
+    if (this.wheelRotation || this.toMainTrigger) {
       switch (logo.direction) {
         case DIRECTION.NE:
           logo.x += logo.speed;

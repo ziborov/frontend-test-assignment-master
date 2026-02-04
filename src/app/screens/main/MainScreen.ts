@@ -88,13 +88,17 @@ export class MainScreen extends Container {
         this.bouncer.toMainTrigger = true;
         this.playButton.text = "Press to spin";
         this.bouncer.hide();
-        //engine().navigation.navigateToScreen("home");
-      } else {
-        this.bouncer.toMainTrigger = false;
-        this.playButton.text = "Press to spin";
-        this.bouncer.wheelAdd();
-        this.bouncer.winArrowAdd();
+        engine().audio.bgm.play("main/sounds/bgm-main.mp3", {
+          volume: 1.0,
+          loop: true,
+        });
       }
+      // } else {
+      //   this.bouncer.toMainTrigger = false;
+      //   this.playButton.text = "Press to spin";
+      //   this.bouncer.wheelAdd();
+      //   this.bouncer.winArrowAdd();
+      // }
     });
     this.addChild(this.toMainButton);
 
