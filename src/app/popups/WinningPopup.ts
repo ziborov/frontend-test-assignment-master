@@ -71,6 +71,10 @@ export class WinningPopup extends Container {
       { y: 0 },
       { duration: 0.3, ease: "backOut" },
     );
+    engine().audio.bgm.play("main/sounds/final.wav", {
+      volume: 1.0,
+      loop: false,
+    });
   }
 
   /** Dismiss the popup, animated */

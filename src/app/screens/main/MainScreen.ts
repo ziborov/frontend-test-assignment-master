@@ -27,6 +27,7 @@ export class MainScreen extends Container {
   private winBox: RoundedBox;
   private paused = false;
   private toMainButton: FancyButton;
+  private toMainTrigger: boolean = false;
 
   constructor() {
     super();
@@ -81,9 +82,10 @@ export class MainScreen extends Container {
       anchor: 0.5,
       animations: buttonAnimations,
     });
-    this.toMainButton.onPress.connect(() =>
-      engine().navigation.presentPopup(PausePopup),
-    );
+    this.toMainButton.onPress.connect(() => {
+      this.toMainTrigger = true;
+      this.playButton.text = "Press to spin";
+    });
     this.addChild(this.toMainButton);
 
     this.balanceBox = new RoundedBox({ width: 250, height: 70 });

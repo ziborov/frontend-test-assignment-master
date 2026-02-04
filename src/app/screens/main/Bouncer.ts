@@ -112,6 +112,7 @@ export class Bouncer {
     this.wheelRotation = true;
     const sectorAngle = -(Math.PI * 2) / Bouncer.WHEEL_SECTIONS_QUANTITY;
     this.wheelTargetAngle = sectorAngle * this.sectionIndex - Math.PI / 8;
+    engine().audio.bgm.play("main/sounds/bgm-main.mp3", { volume: 0.5 });
   }
 
   private stopWheelRotation(): void {
